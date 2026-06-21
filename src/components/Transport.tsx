@@ -2,7 +2,7 @@ import { useState, useRef, useMemo } from 'react';
 import { 
   Box, Typography, TextField, Button, Card, CardContent, 
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
-  Paper,   Grid, TablePagination 
+  Paper, Grid, TablePagination 
 } from '@mui/material';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -27,25 +27,31 @@ export default function Transport() {
   
   const [page, setPage] = useState(0);
   const [filterDate, setFilterDate] = useState('');
+  const [selectedRow, setSelectedRow] = useState<TransportData | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
   const filteredData = useMemo(() => {
     return data.filter(item => item.date.includes(filterDate));
   }, [data, filterDate]);
 
-  const handleGenerateAndPrint = async (row: TransportData) => {
-    const input = printRef.current;
-    if (input) {
-      input.style.display = 'block';
-      const canvas = await html2canvas(input);
-      const imgData = canvas.toDataURL('image/png');
-      input.style.display = 'none';
+  const handlePrint = async (row: TransportData) => {
+    setSelectedRow(row);
+    
+    // Use setTimeout to ensure the React state updates the DOM before capturing
+    setTimeout(async () => {
+      const input = printRef.current;
+      if (input) {
+        input.style.display = 'block';
+        const canvas = await html2canvas(input);
+        const imgData = canvas.toDataURL('image/png');
+        input.style.display = 'none';
 
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
-      pdf.autoPrint();
-      window.open(pdf.output('bloburl'), '_blank');
-    }
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+        pdf.autoPrint();
+        window.open(pdf.output('bloburl'), '_blank');
+      }
+    }, 100);
   };
 
   return (
@@ -81,8 +87,13 @@ export default function Transport() {
           <TableBody>
             {filteredData.slice(page * 5, page * 5 + 5).map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{row.vNo}</TableCell><TableCell>{row.material}</TableCell><TableCell>{row.billNo}</TableCell><TableCell>{row.deliveryPlace}</TableCell>
-                <TableCell><Button size="small" variant="contained" onClick={() => handleGenerateAndPrint(row)}>Print DC</Button></TableCell>
+                <TableCell>{row.vNo}</TableCell>
+                <TableCell>{row.material}</TableCell>
+                <TableCell>{row.billNo}</TableCell>
+                <TableCell>{row.deliveryPlace}</TableCell>
+                <TableCell>
+                  <Button size="small" variant="contained" onClick={() => handlePrint(row)}>Print DC</Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -90,13 +101,14 @@ export default function Transport() {
         <TablePagination component="div" count={filteredData.length} page={page} onPageChange={(_, p) => setPage(p)} rowsPerPage={5} />
       </TableContainer>
 
-      {/* Hidden Print Area */}
+      {/* Hidden Print Area - Reflects selectedRow state */}
       <Box ref={printRef} sx={{ display: 'none', p: 5, bgcolor: '#fff' }}>
         <Typography variant="h4">Delivery Challan</Typography>
         <Box sx={{ my: 2 }}>
-          <Typography>Material: Steel Rods</Typography>
-          <Typography>Bill No: B001</Typography>
-          <Typography>Destination: Site A (45 KM)</Typography>
+          <Typography>Material: {selectedRow?.material}</Typography>
+          <Typography>Bill No: {selectedRow?.billNo}</Typography>
+          <Typography>Vehicle: {selectedRow?.vNo}</Typography>
+          <Typography>Destination: {selectedRow?.deliveryPlace} ({selectedRow?.km} KM)</Typography>
         </Box>
       </Box>
     </Box>
