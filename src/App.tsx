@@ -16,8 +16,8 @@ function App() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  // இந்த பங்க்ஷனைச் சேர்க்கவும்:
 
+  
 
   const renderPage = () => {
     switch (activeMenu) {
