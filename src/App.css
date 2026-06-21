@@ -1,0 +1,26 @@
+/* src/App.css கோப்பின் கீழே இதைச் சேர்க்கவும் */
+.app-container {
+  display: flex;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px;
+}
+
+.main-title {
+  color: #111827;
+  margin-top: 0;
+}
+
+.main-description {
+  color: #6b7280;
+}
+/* ஏற்கனவே உள்ள கோடுகளின் கீழே இதைச் சேர்க்கவும் */
+.app-footer {
+  margin-top: 40px;
+  font-size: 12px;
+  color: #9ca3af;
+}

@@ -1,0 +1,98 @@
+/* src/components/Sidebar.css */
+
+.sidebar-wrapper {
+  display: flex;
+}
+
+.sidebar-aside {
+  height: 100vh;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: sans-serif;
+}
+
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 20px;
+  right: -12px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.sidebar-logo-section {
+  padding: 24px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-logo-text {
+  margin: 0;
+  color: #ff6600;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  background-color: transparent;
+  color: #4b5563;
+}
+
+/* Hover effect */
+.sidebar-menu-btn:hover:not(.active) {
+  background-color: #f9fafb;
+}
+
+/* Active Menu Styles */
+.sidebar-menu-btn.active {
+  background-color: #fff5ed;
+  color: #ff6600;
+  font-weight: 600;
+}
+
+.sidebar-icon {
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-menu-btn.active .sidebar-icon {
+  color: #ff6600;
+}
+
+.sidebar-menu-text {
+  font-size: 14px;
+}
